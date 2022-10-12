@@ -33,6 +33,5 @@ struct URLS: Codable {
 
 struct Image {
     let results: Result
-    var buy: Bool
+    var paid: Bool = false
 }
-

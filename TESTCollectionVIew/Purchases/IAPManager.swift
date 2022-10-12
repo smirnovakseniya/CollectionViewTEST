@@ -14,39 +14,37 @@ final class IAPManager: NSObject, SKProductsRequestDelegate, SKPaymentTransactio
     
     static let shared = IAPManager()
     
-    var products = [SKProduct]()
-    
-    private var complition: ((Bool) -> Void)?
+    private var products = [SKProduct]()
+    private var completion: ((Bool) -> Void)?
     
     //MARK: - Functions
     
     public func fetchProduct() {
-        
         let request = SKProductsRequest(productIdentifiers: Set(Product.allCases.compactMap({ $0.rawValue })))
         request.delegate = self
         request.start()
     }
     
-    func productsRequest(_ request: SKProductsRequest, didReceive response: SKProductsResponse) {
+    public func productsRequest(_ request: SKProductsRequest, didReceive response: SKProductsResponse) {
         self.products = response.products
     }
     
-    public func purchase(product: Product, complition: @escaping (Bool) -> Void) {
+    public func purchase(product: Product?, completion: @escaping (Bool) -> Void) {
         guard SKPaymentQueue.canMakePayments() else { return }
-        guard let storeKitProduct = products.first(where: { $0.productIdentifier == product.rawValue}) else { return }
+        guard let storeKitProduct = products.first(where: { $0.productIdentifier == product?.rawValue}) else { return }
         
-        self.complition = complition
+        self.completion = completion
         
         let paymentRequest = SKPayment(product: storeKitProduct)
         SKPaymentQueue.default().add(self)
         SKPaymentQueue.default().add(paymentRequest)
     }
     
-    func paymentQueue(_ queue: SKPaymentQueue, updatedTransactions transactions: [SKPaymentTransaction]) {
+    public func paymentQueue(_ queue: SKPaymentQueue, updatedTransactions transactions: [SKPaymentTransaction]) {
         transactions.forEach ({
             switch $0.transactionState {
             case .purchased:
-                complition?(true)
+                completion?(true)
                 SKPaymentQueue.default().finishTransaction($0)
                 SKPaymentQueue.default().remove(self)
             default:

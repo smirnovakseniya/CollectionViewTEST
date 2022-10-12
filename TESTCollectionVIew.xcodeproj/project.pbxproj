@@ -19,12 +19,13 @@
 		F227DA6328EEDCF9002F03BC /* UnsplashResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = F227DA6228EEDCF9002F03BC /* UnsplashResult.swift */; };
 		F26BEA8928F0284400B33725 /* IAPManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F26BEA8828F0284400B33725 /* IAPManager.swift */; };
 		F26BEA9128F2C58A00B33725 /* MainVCModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F26BEA9028F2C58A00B33725 /* MainVCModel.swift */; };
-		F26BEA9328F2D58700B33725 /* PriceList.swift in Sources */ = {isa = PBXBuildFile; fileRef = F26BEA9228F2D58700B33725 /* PriceList.swift */; };
 		F2E8C8B928F3F1DF00F8E295 /* PurchasesModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2E8C8B828F3F1DF00F8E295 /* PurchasesModel.swift */; };
 		F2E8C8BB28F3F86B00F8E295 /* CustomLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2E8C8BA28F3F86B00F8E295 /* CustomLabel.swift */; };
 		F2E8C8BF28F4A12A00F8E295 /* Colors.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2E8C8BE28F4A12A00F8E295 /* Colors.swift */; };
 		F2E8C8C128F546FD00F8E295 /* Lato-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = F2E8C8C028F546FD00F8E295 /* Lato-Medium.ttf */; };
 		F2E8C8C428F5475000F8E295 /* Fonts.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2E8C8C328F5475000F8E295 /* Fonts.swift */; };
+		F2E8C8C628F5A4CF00F8E295 /* Reachability.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2E8C8C528F5A4CF00F8E295 /* Reachability.swift */; };
+		F2E8C8C828F5FEAE00F8E295 /* Prices.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2E8C8C728F5FEAE00F8E295 /* Prices.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -42,12 +43,13 @@
 		F26BEA8828F0284400B33725 /* IAPManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IAPManager.swift; sourceTree = "<group>"; };
 		F26BEA8A28F02BFB00B33725 /* Configuration.storekit */ = {isa = PBXFileReference; lastKnownFileType = text; path = Configuration.storekit; sourceTree = "<group>"; };
 		F26BEA9028F2C58A00B33725 /* MainVCModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainVCModel.swift; sourceTree = "<group>"; };
-		F26BEA9228F2D58700B33725 /* PriceList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PriceList.swift; sourceTree = "<group>"; };
 		F2E8C8B828F3F1DF00F8E295 /* PurchasesModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PurchasesModel.swift; sourceTree = "<group>"; };
 		F2E8C8BA28F3F86B00F8E295 /* CustomLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomLabel.swift; sourceTree = "<group>"; };
 		F2E8C8BE28F4A12A00F8E295 /* Colors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Colors.swift; sourceTree = "<group>"; };
 		F2E8C8C028F546FD00F8E295 /* Lato-Medium.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Lato-Medium.ttf"; sourceTree = "<group>"; };
 		F2E8C8C328F5475000F8E295 /* Fonts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Fonts.swift; sourceTree = "<group>"; };
+		F2E8C8C528F5A4CF00F8E295 /* Reachability.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Reachability.swift; sourceTree = "<group>"; };
+		F2E8C8C728F5FEAE00F8E295 /* Prices.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Prices.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -89,7 +91,6 @@
 				F227DA6028EEDC5F002F03BC /* Controllers */,
 				F2E8C8BA28F3F86B00F8E295 /* CustomLabel.swift */,
 				F227DA5A28EECA59002F03BC /* TabBarVC.swift */,
-				F26BEA9228F2D58700B33725 /* PriceList.swift */,
 				F2E8C8C228F5470400F8E295 /* Assets */,
 				F227DA3128ED97D8002F03BC /* LaunchScreen.storyboard */,
 				F227DA3428ED97D8002F03BC /* Info.plist */,
@@ -101,6 +102,7 @@
 			isa = PBXGroup;
 			children = (
 				F227DA3C28EDA942002F03BC /* NetworkManager.swift */,
+				F2E8C8C528F5A4CF00F8E295 /* Reachability.swift */,
 				F26BEA8D28F2C45000B33725 /* Models */,
 			);
 			path = Networking;
@@ -127,6 +129,7 @@
 			isa = PBXGroup;
 			children = (
 				F26BEA9028F2C58A00B33725 /* MainVCModel.swift */,
+				F2E8C8C728F5FEAE00F8E295 /* Prices.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -153,9 +156,9 @@
 			isa = PBXGroup;
 			children = (
 				F2E8C8BE28F4A12A00F8E295 /* Colors.swift */,
+				F2E8C8C328F5475000F8E295 /* Fonts.swift */,
 				F2E8C8C028F546FD00F8E295 /* Lato-Medium.ttf */,
 				F227DA2F28ED97D8002F03BC /* Assets.xcassets */,
-				F2E8C8C328F5475000F8E295 /* Fonts.swift */,
 			);
 			path = Assets;
 			sourceTree = "<group>";
@@ -245,12 +248,13 @@
 				F26BEA9128F2C58A00B33725 /* MainVCModel.swift in Sources */,
 				F26BEA8928F0284400B33725 /* IAPManager.swift in Sources */,
 				F227DA3D28EDA942002F03BC /* NetworkManager.swift in Sources */,
+				F2E8C8C628F5A4CF00F8E295 /* Reachability.swift in Sources */,
 				F2E8C8BB28F3F86B00F8E295 /* CustomLabel.swift in Sources */,
 				F2E8C8BF28F4A12A00F8E295 /* Colors.swift in Sources */,
 				F227DA2728ED97D6002F03BC /* AppDelegate.swift in Sources */,
 				F227DA5B28EECA59002F03BC /* TabBarVC.swift in Sources */,
+				F2E8C8C828F5FEAE00F8E295 /* Prices.swift in Sources */,
 				F2E8C8B928F3F1DF00F8E295 /* PurchasesModel.swift in Sources */,
-				F26BEA9328F2D58700B33725 /* PriceList.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -395,6 +399,8 @@
 				INFOPLIST_KEY_CFBundleDisplayName = "Test Smirnova";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
+				INFOPLIST_KEY_UIStatusBarHidden = NO;
+				INFOPLIST_KEY_UIStatusBarStyle = "";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
 				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
@@ -427,6 +433,8 @@
 				INFOPLIST_KEY_CFBundleDisplayName = "Test Smirnova";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
+				INFOPLIST_KEY_UIStatusBarHidden = NO;
+				INFOPLIST_KEY_UIStatusBarStyle = "";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
 				IPHONEOS_DEPLOYMENT_TARGET = 13.0;

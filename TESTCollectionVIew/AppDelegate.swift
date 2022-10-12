@@ -9,14 +9,15 @@ import UIKit
 
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
-
+    
     var window: UIWindow?
-
+    
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
+        
         let window = UIWindow(frame: UIScreen.main.bounds)
-//        window.rootViewController = UINavigationController(rootViewController: TabBarVC())
         window.rootViewController = TabBarVC()
         window.makeKeyAndVisible()
+        window.overrideUserInterfaceStyle = .light
         self.window = window
         
         setupNavBarAppearance()
@@ -30,20 +31,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         return UIInterfaceOrientationMask.portrait
     }
     
-    func setupNavBarAppearance() {
-//                let navBarAppearance = UINavigationBarAppearance()
-//                navBarAppearance.configureWithDefaultBackground()
-//                navBarAppearance.backgroundColor = .white
-//
-//                UINavigationBar.appearance().standardAppearance = navBarAppearance
-//
+    func applicationWillTerminate(_ application: UIApplication) {
+        NetworkManager.shared.cache.removeAllObjects()
+    }
     
-
-        UINavigationBar.appearance().backgroundColor = .white
-        UINavigationBar.appearance().tintColor = .white
-       
-        
-        
+    func setupNavBarAppearance() {
+        let navBarAppearance = UINavigationBarAppearance()
+        navBarAppearance.titleTextAttributes = [.foregroundColor: UIColor.black as Any,
+                                                .font: Fonts.latoMedium.rawValue.withSize(20) as Any]
+        navBarAppearance.backgroundColor = .white
+        UINavigationBar.appearance().standardAppearance = navBarAppearance
     }
 }
 

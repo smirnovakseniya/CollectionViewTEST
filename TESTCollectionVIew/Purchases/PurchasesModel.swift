@@ -16,5 +16,4 @@ enum Product: String, CaseIterable {
     case dell
     case flysi3000
     case christinhumephoto 
-
 }

@@ -10,8 +10,6 @@ import SnapKit
 
 class ImageCollectionViewCell: UICollectionViewCell {
     
-    //MARK: - Struct
-    
     struct ResultCell {
         let row: Int
         var counter: Int
@@ -22,29 +20,29 @@ class ImageCollectionViewCell: UICollectionViewCell {
         var priceDownload: Double
         var allImageArray: [Image]
         let resultCount: Int
-        var buy: Bool
+        var paid: Bool
     }
     
     //MARK: - Variables
     
     static let identifier = "ImageCollectionViewCell"
     
-    let borderLayer = CAShapeLayer()
+    private let borderLayer = CAShapeLayer()
     
-    var priceHandler : ((String) -> Void)?
+    var priceHandler: ((String) -> Void)?
     
     private let bgView = UIView()
     private let borderBackView = UIView()
-    private let cellLabel = CustomLabel()
     
-     let cellImageView: UIImageView = {
+    private let cellLabel = CustomLabel()
+    private let priceLabel = CustomLabel()
+    private let cellImageView: UIImageView = {
         let iv = UIImageView()
         iv.clipsToBounds = true
         iv.contentMode = .scaleAspectFit
         iv.layer.cornerRadius = 10
         return iv
     }()
-    
     private let priceView: UIView = {
         let v = UIView()
         v.layer.cornerRadius = 5
@@ -52,13 +50,10 @@ class ImageCollectionViewCell: UICollectionViewCell {
         return v
     }()
     
-    let priceLabel = CustomLabel()
-    
     //MARK: - Init
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        
         commonInit()
         
         cellLabel.snp.makeConstraints { (make) in
@@ -74,25 +69,23 @@ class ImageCollectionViewCell: UICollectionViewCell {
             make.center.equalToSuperview()
             make.left.right.equalToSuperview().inset(10)
         }
-        
-        
     }
     
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         commonInit()
     }
-   
+    
     func commonInit() {
         contentView.addSubview(borderBackView)
         contentView.addSubview(cellLabel)
         contentView.addSubview(bgView)
+        
         bgView.addSubview(cellImageView)
         bgView.addSubview(priceView)
+        
         priceView.addSubview(priceLabel)
         
-        //border
-//        layer.cornerRadius = 10.0
         borderLayer.strokeColor = UIColor.black.cgColor
         borderLayer.lineDashPattern = [4, 4]
         borderLayer.fillColor = nil
@@ -119,28 +112,34 @@ class ImageCollectionViewCell: UICollectionViewCell {
     
     //MARK: - Functions
     
-    func configure(data: ResultCell) {
+    func configure(_ data: ResultCell) {
         cellLabel.text = data.name
         tag = data.row
-        if let cachedImage = NetworkManager.shared.cache.object(forKey: data.row as NSNumber) {
-             cellImageView.image = cachedImage
-        }
         if data.counter != data.resultCount {
-            NetworkManager.shared.downloadImage(urlString: data.urlString, index: data.row) { [weak self] (i, image) in
-                if self?.tag == i {
-                    self?.cellImageView.image = image
-                    self?.priceHandler?(data.name)
-                    self?.setImageCell()
+            if let cachedImage = NetworkManager.shared.cache.object(forKey: data.row as NSNumber) {
+                cellImageView.image = cachedImage
+                priceHandler?(data.name)
+                setImageCell()
+            } else {
+                NetworkManager.shared.downloadImage(urlString: data.urlString, row: data.row) { [weak self] (row, image) in
+                    if self?.tag == row {
+                        self?.cellImageView.image = image
+                        self?.priceHandler?(data.name)
+                        self?.setImageCell()
+                    }
                 }
             }
         } else {
-            if data.buy {
+            if data.paid {
                 priceView.backgroundColor = Colors.greenColor.rawValue
                 priceView.alpha = 1
                 priceLabel.text = "✓"
                 priceLabel.textColor = .white
             } else {
                 setPriceCell(price: data.priceDownload)
+            }
+            if let cachedImage = NetworkManager.shared.cache.object(forKey: data.row as NSNumber) {
+                cellImageView.image = cachedImage
             }
         }
     }
@@ -150,7 +149,7 @@ class ImageCollectionViewCell: UICollectionViewCell {
         cellLabel.alpha = 0
         borderBackView.alpha = 0
     }
-
+    
     func setPriceCell(price: Double) {
         setImageCell()
         if price == 0 {
@@ -164,5 +163,4 @@ class ImageCollectionViewCell: UICollectionViewCell {
         }
         priceView.alpha = 1
     }
-
 }

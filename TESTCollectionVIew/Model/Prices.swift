@@ -1,11 +1,11 @@
 //
-//  PriceList.swift
+//  Prices.swift
 //  TESTCollectionVIew
 //
-//  Created by Kseniya Smirnova on 9.10.22.
+//  Created by Kseniya Smirnova on 11.10.22.
 //
 
-public let priceList: [String : Double] = [
+public let pricesResponse: [String : Double] = [
     Product.impatrickt.rawValue : 99.9,
     Product.thestandingdesk.rawValue : 9.99,
     Product.thisisengineering.rawValue : 0.99,

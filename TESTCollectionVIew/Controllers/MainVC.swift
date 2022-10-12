@@ -10,8 +10,10 @@ import SnapKit
 
 class MainVC: UIViewController {
     
+    //MARK: - Variables
+    
     private var collectionView: UICollectionView?
-//    private let errorLabel = CustomLabel()
+    private let errorLabel = CustomLabel()
     
     private let shadowView: UIView = {
         let v = UIView()
@@ -19,26 +21,30 @@ class MainVC: UIViewController {
         return v
     }()
     
-    //MARK: - Variables
-    
-    var model = MainVCModel()
+    private var model = MainVCModel()
     
     //MARK: - Lifecycle
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        navigationItem.title = "Main"
-        view.backgroundColor = .white
-        
         model.delegate = self
-       model.getImages()
+        model.getImages()
         
+        setUI()
         setCollectionView()
         setConstraints()
     }
     
     //MARK: - Functions
+    
+    func setUI() {
+        navigationItem.title = "Main"
+        view.backgroundColor = .white
+        
+        view.addSubview(shadowView)
+        shadowView.addSubview(errorLabel)
+    }
     
     func setCollectionView() {
         let layout = PinterestLayout()
@@ -53,14 +59,10 @@ class MainVC: UIViewController {
         collectionView.contentInset = UIEdgeInsets(top: 5, left: 0, bottom: 0, right: 0)
         
         self.collectionView = collectionView
-        
         shadowView.addSubview(collectionView)
     }
     
     func setConstraints() {
-        view.addSubview(shadowView)
-//        shadowView.addSubview(errorLabel)
-        
         self.shadowView.snp.makeConstraints { (make) in
             make.top.equalTo(view.safeAreaLayoutGuide.snp.top)
             make.left.right.bottom.equalToSuperview()
@@ -69,52 +71,36 @@ class MainVC: UIViewController {
             make.top.bottom.equalToSuperview()
             make.left.right.equalToSuperview().inset(5)
         }
-//        self.errorLabel.snp.makeConstraints { (make) in
-//            make.centerY.equalToSuperview()
-//            make.left.right.equalToSuperview().inset(5)
-//        }
+        self.errorLabel.snp.makeConstraints { (make) in
+            make.centerY.equalToSuperview()
+            make.left.right.equalToSuperview().inset(5)
+        }
     }
-    var task: URLSessionDownloadTask!
 }
 
 //MARK: - Extension UICollectionView
 
 extension MainVC: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return model.resultCount()
+        return model.resultsCount()
     }
     
-    //MARK: - НАДО!!!!
-
-        func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ImageCollectionViewCell.identifier, for: indexPath) as! ImageCollectionViewCell
-            
-            cell.configure(data: model.setCell(row: indexPath.row))
-            
-            if let cachedImage =  NetworkManager.shared.cache.object(forKey: indexPath.row as NSNumber) {
-                 cell.cellImageView.image = cachedImage
-            }
-            
-            cell.priceHandler = { [weak self] name in
-                self?.model.price(name: name, row: indexPath.row)
-            }
-           
-            return cell
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ImageCollectionViewCell.identifier, for: indexPath) as? ImageCollectionViewCell else { return UICollectionViewCell() }
+        
+        cell.configure(model.setCell(row: indexPath.row))
+        cell.priceHandler = { [weak self] (name) in
+            self?.model.price(name: name, row: indexPath.row)
         }
+        return cell
+    }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        if model.counter == model.results.count {
-            if !model.allImageArray[indexPath.row].buy {
-                IAPManager.shared.purchase(product: Product(rawValue: model.userName(row: indexPath.row))!) { [weak self] i in
-                    self?.model.purchises(row: indexPath.row)
-                }
-            } else {
-                let alert = UIAlertController(title: "Picture \"\(model.userName(row: indexPath.row))\" already purchased",
-                                              message: "", preferredStyle: .alert)
-                alert.addAction(UIAlertAction(title: "OK", style: .cancel))
-                self.present(alert, animated: true)
-            }
-        }
+        guard !model.purchased(indexPath.row) else { return }
+        let alert = UIAlertController(title: "Picture \"\(model.userName(indexPath.row))\" already purchased",
+                                      message: "", preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "OK", style: .cancel))
+        self.present(alert, animated: true)
     }
 }
 
@@ -127,15 +113,21 @@ extension MainVC: UICollectionViewDelegateFlowLayout {
 }
 
 extension MainVC: PinterestLayoutDelegate {
-    func collectionView(_ collectionView: UICollectionView, heightForPhotoAtIndexPath indexPath: IndexPath) -> CGFloat {
+    func collectionView(_ collectionView: UICollectionView, heightForImageAtIndexPath indexPath: IndexPath) -> CGFloat {
         let spacing: CGFloat = 5
-        let coeff = CGFloat(model.sizeImage(row: indexPath.item).height) / CGFloat(model.sizeImage(row: indexPath.item).width)
-        return (collectionView.frame.width / 2.0 - spacing * 2) * coeff
+        let ratio = CGFloat(model.imageSize(indexPath.item).height) / CGFloat(model.imageSize(indexPath.item).width)
+        return (collectionView.frame.width / 2.0 - spacing * 2) * ratio
     }
 }
 
+//MARK: - Extension MainVC
+
 extension MainVC: MainVCDelegate {
-    func reloadItem(row: Int) {
+    func errorMessage(_ text: String) {
+        errorLabel.text = text
+    }
+    
+    func reloadItem(_ row: Int) {
         DispatchQueue.main.async {
             self.collectionView?.reloadItems(at: [IndexPath(row: row, section: 0)])
         }
